@@ -10,12 +10,13 @@ library(magrittr)
 # Create the sample dataset
 set.seed(123) # For reproducibility
 countries <- c("Austria", "Germany", "Italy")
+period <- 1992:2019
 table_dt <- data.table(
-    reporter = rep(countries, each = 28),
-    year = rep(1992:2019, 3),
-    tech_exports = rnorm(30, 5000, 1000), # Sample tech_exports data
-    rprices = rnorm(30, 100, 20), # Sample rprices data
-    fincome = rnorm(30, 40000, 5000) # Sample fincome data
+    reporter = rep(countries, each = length(period)),
+    year = rep(period, length(countries)),
+    tech_exports = rnorm(length(countries) * length(period), 5000, 1000), # Sample tech_exports data
+    rprices = rnorm(length(countries) * length(period), 100, 20), # Sample rprices data
+    fincome = rnorm(length(countries) * length(period), 40000, 5000) # Sample fincome data
 )
 sel_variables <- c("tech_exports", "rprices", "fincome")
 lags <- 1
