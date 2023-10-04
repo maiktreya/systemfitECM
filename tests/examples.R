@@ -19,7 +19,9 @@ table_dt <- data.table(
     year = rep(period, length(countries)),
     tech_exports = rnorm(length(countries) * length(period), 5000, 1000), # Sample tech_exports data
     rprices = rnorm(length(countries) * length(period), 100, 20), # Sample rprices data
-    fincome = rnorm(length(countries) * length(period), 40000, 5000) # Sample fincome data
+    fincome = rnorm(length(countries) * length(period), 40000, 5000), # Sample fincome data
+    investment = rnorm(length(countries) * length(period), 40000, 5000), # Sample rprices data
+    consumption = rnorm(length(countries) * length(period), 40000, 5000) # Sample fincome data
 )
 sel_variables <- c("tech_exports", "rprices", "fincome")
 lags <- 1
@@ -33,7 +35,8 @@ pre_exp <- uecm_systemfit(
     grouping = "reporter",
     method = "SUR",
     iterations = iterations,
-    method_solv = "EViews" # only 3sls
+    method_solv = "EViews", # only 3sls,
+    inst_list = c("fincome", "investment", "consumption") # endo first, then remaining
 )
 
 # Apply and F Bound-Test for equations in systems following Pesaran (2001)
