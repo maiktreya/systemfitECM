@@ -23,8 +23,8 @@ table_dt <- data.table(
     investment = rnorm(length(countries) * length(period), 40000, 5000), # Sample rprices data
     consumption = rnorm(length(countries) * length(period), 40000, 5000) # Sample fincome data
 )
-sel_variables <- c("tech_exports", "rprices", "fincome")
-instruments <- c("fincome", "investment", "consumption")
+sel_variables <- c("tech_exports", "rprices", "fincome") # first is dependant variable in systemfit
+instruments <- c("fincome", "investment", "consumption") # first is endogenous regressor and remaining their instruments.
 method <- "SUR"
 estimation3SLS <- "EViews"
 lags <- 1
