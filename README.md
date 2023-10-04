@@ -48,6 +48,7 @@ Pacakage functions:
 - **get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by other functions.
 - **recm_systemfit**: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
 - **systemfit_boundsF_test**: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
+  - corresponding p-values should be taken from the original article or Nayaran (2003). This version only works for case III (intercept, no time trend.)
 
 ------------------------------------------------
 
