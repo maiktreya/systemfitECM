@@ -11,3 +11,5 @@
     -     systemfit,
     -     data.table,
     -     plm
+
+### Package functions and example file inside R folder
