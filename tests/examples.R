@@ -30,6 +30,7 @@ pre_exp <- uecm_systemfit(
     dt = table_dt,
     col_names = sel_variables,
     nlags = lags,
+    grouping = "reporter",
     method = "SUR",
     iterations = iterations,
     method_solv = "EViews" # only 3sls
@@ -47,6 +48,7 @@ pos_exp <- recm_systemfit(
     dt = table_dt,
     col_names = sel_variables,
     nlags = lags,
+    grouping = "reporter",
     method = "SUR",
     iterations = iterations,
     method_solv = "EViews" # only 3sls

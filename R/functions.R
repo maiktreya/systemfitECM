@@ -15,6 +15,7 @@
 uecm_systemfit <- function(
     col_names = c(),
     nlags = 1,
+    grouping,
     method = "SUR",
     method_solv = "EViews",
     iterations = 1,
@@ -26,14 +27,14 @@ uecm_systemfit <- function(
     for (col in col_names) {
         # Add diff column
         diff_col <- paste0(col, "_diff")
-        dt[, (diff_col) := diff(c(NA, get(col)))]
-        diff_cols <- c(diff_cols, diff_col)
+        dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
+        diff_cols <- c(diff_cols, diff_col) # Populate diff_cols vector
 
         # Add lag columns for each lag value
         for (lag in 1:nlags) {
             lag_col <- paste0(col, "_lag", lag)
-            dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag")]
-            all_lag_cols <- c(all_lag_cols, lag_col)
+            dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
+            all_lag_cols <- c(all_lag_cols, lag_col) # Populate all_lag_cols vector
         }
     }
 
@@ -125,6 +126,7 @@ get_ect_systemfit <- function(systemfit_uecm_coefs, sel_variables, table_dt) {
 recm_systemfit <- function(
     col_names = c(),
     uecm_model,
+    grouping,
     method = "SUR",
     method_solv = "EViews",
     iterations = 1,
@@ -148,17 +150,19 @@ recm_systemfit <- function(
     for (col in col_names) {
         # Add diff column
         diff_col <- paste0(col, "_diff")
-        dt[, (diff_col) := diff(c(NA, get(col)))]
+        dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col)
+
         if (nlags >= 2) {
             # Add lag columns for each lag value
             for (lag in 2:nlags) {
                 lag_col <- paste0(col, "_lag", lag)
-                dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag")]
+                dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
                 all_lag_cols <- c(all_lag_cols, lag_col)
             }
         }
     }
+
 
     # Construct formula string
     ifelse(nlags >= 2,
