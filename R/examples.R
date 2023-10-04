@@ -6,6 +6,7 @@ library(data.table)
 library(plm)
 library(systemfit)
 library(magrittr)
+source("R/functions.R")
 
 # Create the sample dataset
 set.seed(123) # For reproducibility
