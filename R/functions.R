@@ -41,6 +41,7 @@ uecm_systemfit <- function(
     # Construct formula strings
     formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
     inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
+    pre_inst_eq <- coef_exp[names(systemfit_uecm_coefs$coefficients) %like% "lag"]
 
     # Remove rows with NA values
     dt <- dt[complete.cases(dt), ]
