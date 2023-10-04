@@ -37,7 +37,13 @@ pre_exp <- uecm_systemfit(
     method_solv = "EViews" # only 3sls
 )
 
-# Get a Restricted ECM using systemfit methods
+# Apply and F Bound-Test for equations in systems following Pesaran (2001)
+bounds_F_results <- systemfit_boundsF_test(
+    system_ecm = pre_exp,
+    units = countries
+) %>% print()
+
+# Finally, get a Restricted ECM using systemfit methods
 pos_exp <- recm_systemfit(
     uecm_model = pre_exp,
     dt = table_dt,
@@ -49,9 +55,3 @@ pos_exp <- recm_systemfit(
 ) %>%
     summary() %>%
     print()
-
-# Finally, apply and F Bound-Test for equations in systems following Pesaran (2001)
-bounds_F_results <- systemfit_boundsF_test(
-    system_ecm = pos_exp,
-    units = countries
-) %>% print()
