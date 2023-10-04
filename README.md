@@ -41,4 +41,3 @@ Or run the code included in the script for a working application on simulated da
 ## PENDING TO IMPLEMENT
 
 -> Finish instruments implementation
--> Check and fix variables with distinct length
