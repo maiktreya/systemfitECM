@@ -11,7 +11,8 @@ recm_systemfit(
   method_solv = "EViews",
   iterations = 1,
   nlags = 1,
-  dt = data.table::data.table()
+  dt = data.table::data.table(),
+  inst_list = c()
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ recm_systemfit(
 \item{nlags}{An integer specifying the number of lags.}
 
 \item{dt}{A data.table object containing the data.}
+
+\item{inst_list}{List of instruments for 2SLS and 3SLS.}
 }
 \value{
 A model result from systemfit.

@@ -10,7 +10,8 @@ uecm_systemfit(
   method = "SUR",
   method_solv = "EViews",
   iterations = 1,
-  dt = data.table::data.table()
+  dt = data.table::data.table(),
+  inst_list = c()
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ uecm_systemfit(
 \item{iterations}{An integer indicating the number of iterations.}
 
 \item{dt}{A data.table object containing the data.}
+
+\item{inst_list}{List of instruments for 2SLS and 3SLS.}
 }
 \value{
 A model result from systemfit.
