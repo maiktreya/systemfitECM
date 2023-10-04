@@ -7,6 +7,7 @@
 uecm_systemfit(
   col_names = c(),
   nlags = 1,
+  grouping,
   method = "SUR",
   method_solv = "EViews",
   iterations = 1,

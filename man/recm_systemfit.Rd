@@ -7,6 +7,7 @@
 recm_systemfit(
   col_names = c(),
   uecm_model,
+  grouping,
   method = "SUR",
   method_solv = "EViews",
   iterations = 1,
