@@ -38,7 +38,12 @@ uecm_systemfit <- function(
     }
 
     # Construct formula string
+    inst_sample <- "            ~ ect_m  + dif_rprices + dif_consum  + dif_exp"
+    main_sample <- "dif_tech_exp ~ ect_x  + dif_rprices + dif_fincome"
+
     formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
+    inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
+
     # Remove rows with NA values
     dt <- dt[complete.cases(dt), ]
     dt <- plm::pdata.frame(dt, index = c("reporter", "year"))
@@ -52,7 +57,7 @@ uecm_systemfit <- function(
             tol = 1e-5,
             method3sls = "EViews" # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = inst_list)
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
@@ -61,7 +66,7 @@ uecm_systemfit <- function(
             maxiter = iterations,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = inst_list)
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
@@ -177,7 +182,7 @@ recm_systemfit <- function(
             tol = 1e-5,
             method3sls = "EViews" # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = inst_list)
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
     }
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
@@ -186,7 +191,7 @@ recm_systemfit <- function(
             maxiter = iterations,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = inst_list)
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
