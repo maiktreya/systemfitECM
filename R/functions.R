@@ -10,7 +10,7 @@
 #' @param dt A data.table object containing the data.
 #'
 #' @return A model result from systemfit.
-#' @exports
+#' @export
 uecm_systemfit <- function(
     col_names = c(),
     nlags = 1,
