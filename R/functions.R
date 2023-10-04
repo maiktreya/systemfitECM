@@ -38,9 +38,6 @@ uecm_systemfit <- function(
     }
 
     # Construct formula string
-    inst_sample <- "            ~ ect_m  + dif_rprices + dif_consum  + dif_exp"
-    main_sample <- "dif_tech_exp ~ ect_x  + dif_rprices + dif_fincome"
-
     formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
     inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
 
