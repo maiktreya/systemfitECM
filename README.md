@@ -1,5 +1,7 @@
 # Package: systemfitECM
 
+#### 04-10-2023
+
 Description: Enabling the estimation of restricted and unrestricted Error Correction Models (ECM) and performing Pesaran(2001) Bounds-F test for cointegration within systemfit objects/models.
 
     - Type: Package
@@ -40,4 +42,4 @@ Or run the code included in the script for a working application on simulated da
 
 ## PENDING TO IMPLEMENT
 
--> Finish instruments implementation
+-> Check F Bound  test for ARDL(p=1,q=2) which is the only version already tested an implemented.
