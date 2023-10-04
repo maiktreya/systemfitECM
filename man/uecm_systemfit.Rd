@@ -30,5 +30,5 @@ uecm_systemfit(
 A model result from systemfit.
 }
 \description{
-Computes the Unrestricted Error Correction Model for Systemfit.
+Unrestricted Error Correction Model for Systemfit
 }
