@@ -1,0 +1,52 @@
+{
+  "files.associations": {
+    "*.rmd": "markdown"
+  },
+  "r.rterm.linux": "/usr/local/bin/radian",
+  "redhat.telemetry.enabled": true,
+  "r.bracketedPaste": true,
+  "r.plot.useHttpgd": true,
+  "workbench.editorAssociations": {
+    "*.pdf": "pdf.preview",
+    "*.sql": "default",
+    "*.log": "default",
+    "*.xml": "default"
+  },
+  "r.debugger.trackTerminals": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "explorer.confirmDelete": false,
+  "csv-preview.separator": ",",
+  "todo.timekeeping.created.time": false,
+  "todo.timekeeping.finished.time": false,
+  "todo.timekeeping.started.time": false,
+  "todo.timekeeping.finished.enabled": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "terminal.integrated.drawBoldTextInBrightColors": false,
+  "r.lsp.debug": true,
+  "grunt.autoDetect": "on",
+  "gulp.autoDetect": "on",
+  "security.workspace.trust.untrustedFiles": "open",
+  "settingsSync.ignoredSettings": [
+    "-php.debug.ideKey",
+    "-php.debug.executablePath"
+  ],
+  "terminal.integrated.defaultProfile.linux": "zsh (2)",
+  "workbench.colorCustomizations": {
+    "terminal.foreground": "#00FD61",
+    "terminal.background": "#373434"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[r]": {
+    "editor.defaultFormatter": "REditorSupport.r"
+  },
+  "editor.fontSize": 10,
+  "editor.minimap.enabled": false,
+  "terminal.integrated.fontSize": 10,
+  "workbench.colorTheme": "Atom One Light"
+}
