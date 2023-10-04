@@ -1,5 +1,6 @@
 ###############################################
 # Define dataset of usage (data.table required) and selected variables for coint. analysis. The dependant var should be listed first.
+
 library(data.table) # for simple and performant data manipulation 
 library(plm) # needed for systemfit to handle panel structure 
 library(systemfit # for FGLS system linear models 
