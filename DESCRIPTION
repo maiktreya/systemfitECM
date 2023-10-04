@@ -9,5 +9,6 @@ Imports:
     magrittr,
     systemfit,
     data.table,
-    plm
+    plm,
+    aod
 RoxygenNote: 7.2.3
