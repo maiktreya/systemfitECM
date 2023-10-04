@@ -7,10 +7,9 @@ Maintainer: Miguel Garcia-Duch <miguel.garcia.duch@gmail.com>
 Description: Enabling estimating restricted and unrestricted Error Correction Models (ECM) and performing Pesaran(2001) Bounds-F test for cointegration within systemfit objects/models.
 License: GPL-3
 Encoding: UTF-8
-Depends:
-    data.table
 Imports:
     magrittr,
+    data.table,
     systemfit,
     plm,
     aod,
