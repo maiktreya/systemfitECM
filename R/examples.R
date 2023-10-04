@@ -6,7 +6,10 @@ library(plm) # needed for systemfit to handle panel structure
 library(systemfit # for FGLS system linear models 
 library(magrittr) # For piping with %<% without dplyr dependencies 
 library(aod) # for performing F Bounds test
-source("R/functions.R")
+
+# install and import this library
+devtools::install_github("iliciuv/systemfitECM")
+library(systemfitECM)
 
 # Create the sample dataset
 set.seed(123) # For reproducibility
