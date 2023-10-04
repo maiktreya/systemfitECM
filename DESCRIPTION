@@ -12,6 +12,5 @@ Imports:
     data.table,
     systemfit,
     plm,
-    aod,
-    rlang
+    aod
 RoxygenNote: 7.2.3
