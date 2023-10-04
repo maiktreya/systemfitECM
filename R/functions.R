@@ -54,6 +54,9 @@ uecm_systemfit <- function(
             tol = 1e-5,
         )
     )
+
+    # Remove rows with NA values
+    dt <- dt[complete.cases(dt), ]
     dt <- plm::pdata.frame(dt, index = c("reporter", "year"))
     lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system)
     return(lm_result)
@@ -161,6 +164,9 @@ recm_systemfit <- function(
             tol = 1e-5,
         )
     )
+
+    # Remove rows with NA values
+    dt <- dt[complete.cases(dt), ]
     # Run systemfit model
     dt <- plm::pdata.frame(dt, index = c("reporter", "year"))
     lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system)
