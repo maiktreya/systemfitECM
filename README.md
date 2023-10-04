@@ -38,7 +38,7 @@ source('tests/examples.R')
 
 Or run the code included in the script for a working application on simulated data
 
-### IMPLEMENTATION
+### Core functionality
 
 Pacakage functions:
 
