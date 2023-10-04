@@ -165,6 +165,8 @@ recm_systemfit <- function(
         formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect, all_lag_cols), collapse = " + ")),
         formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect), collapse = " + "))
     )
+    inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
+
     # Remove rows with NA values
     dt <- dt[complete.cases(dt), ]
     # Run systemfit model
@@ -179,7 +181,7 @@ recm_systemfit <- function(
             tol = 1e-5,
             method3sls = "EViews" # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
@@ -188,7 +190,7 @@ recm_systemfit <- function(
             maxiter = iterations,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
