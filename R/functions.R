@@ -24,12 +24,15 @@ uecm_systemfit <- function(
     diff_cols <- c()
     all_lag_cols <- c()
 
-    for (col in col_names) {
+    ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
+
+    for (col in col_names_ext) {
         # Add diff column
         diff_col <- paste0(col, "_diff")
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col) # Populate diff_cols vector
-
+    }
+    for (col in col_names) {
         # Add lag columns for each lag value
         for (lag in 1:nlags) {
             lag_col <- paste0(col, "_lag", lag)
@@ -38,9 +41,14 @@ uecm_systemfit <- function(
         }
     }
 
+    if (method != "SUR") {
+        diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
+        inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
+        diff_cols <- diff_cols[!(diff_cols %like% inst_list[-1])]
+    }
+
     # Construct formula strings
     formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
-    inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
 
     # Remove rows with NA values
     dt <- dt[complete.cases(dt), ]
@@ -144,6 +152,7 @@ recm_systemfit <- function(
     )
     dt <- cbind(dt, ect_test)
     ect <- dt$ect_test
+    ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
 
 
     # Add lag columns for each lag value
@@ -152,7 +161,8 @@ recm_systemfit <- function(
         diff_col <- paste0(col, "_diff")
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col)
-
+    }
+    for (col in col_names_ext) {
         if (nlags >= 2) {
             # Add lag columns for each lag value
             for (lag in 2:nlags) {
@@ -163,13 +173,17 @@ recm_systemfit <- function(
         }
     }
 
+    if (method != "SUR") {
+        diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
+        inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
+        diff_cols <- diff_cols[!(diff_cols %like% inst_list[-1])]
+    }
 
     # Construct formula string
     ifelse(nlags >= 2,
         formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect, all_lag_cols), collapse = " + ")),
         formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect), collapse = " + "))
     )
-    inst_eq <- paste("~", paste(inst_list, collapse = "+")) # only right-hand-side with endog reg replace by its insts.
 
     # Remove rows with NA values
     dt <- dt[complete.cases(dt), ]
