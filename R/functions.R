@@ -1,3 +1,5 @@
+#### MODULE FOR INTEGRATION OF ECM INTO SYSTEMFIT
+
 #' Unrestricted Error Correction Model for Systemfit
 #' @importFrom rlang :=
 #' Computes the Unrestricted Error Correction Model for Systemfit.
@@ -115,6 +117,7 @@ get_ect_systemfit <- function(systemfit_uecm_coefs, sel_variables, table_dt) {
     transf <- data.table::data.table(ect_x)
     return(transf)
 }
+
 
 #' Restricted Error Correction Model for Systemfit
 #'
