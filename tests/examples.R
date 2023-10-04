@@ -8,9 +8,7 @@ library(magrittr) # For piping with %<% without dplyr dependencies
 library(aod) # for performing F Bounds test
 
 # install and import this library
-devtools::install_github("iliciuv/systemfitECM")
 library(systemfitECM)
-# source("R/functions.R")
 
 # Create the sample dataset
 set.seed(123) # For reproducibility
