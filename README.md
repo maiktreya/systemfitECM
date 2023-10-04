@@ -38,6 +38,15 @@ source('tests/examples.R')
 
 Or run the code included in the script for a working application on simulated data
 
+### IMPLEMENTATION
+
+Pacakage functions:
+
+- uecm_systemfit: Estimates Unrestricted-ECM
+- get_ect_systemfit Generates a Error Correction Term serie for a given UECM. Called internally by other functions.
+- recm_systemfit: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
+- systemfit_boundsF_test: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
+
 ------------------------------------------------
 
 ## PENDING TO IMPLEMENT
