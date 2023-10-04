@@ -24,6 +24,9 @@ table_dt <- data.table(
     consumption = rnorm(length(countries) * length(period), 40000, 5000) # Sample fincome data
 )
 sel_variables <- c("tech_exports", "rprices", "fincome")
+instruments <- c("fincome", "investment", "consumption")
+method <- "SUR"
+estimation3SLS <- "EViews"
 lags <- 1
 iterations <- 1
 
@@ -33,11 +36,14 @@ pre_exp <- uecm_systemfit(
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
-    method = "SUR",
+    method = method,
     iterations = iterations,
-    method_solv = "EViews", # only 3sls,
-    inst_list = c("fincome", "investment", "consumption") # endo first, then remaining
-)
+    method_solv = estimation3SLS, # only 3sls,
+    inst_list = instruments # endo first, then remaining
+) %>%
+    summary() %>%
+    print()
+
 
 # Apply and F Bound-Test for equations in systems following Pesaran (2001)
 bounds_F_results <- systemfit_boundsF_test(
@@ -52,9 +58,10 @@ pos_exp <- recm_systemfit(
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
-    method = "SUR",
+    method = method,
     iterations = iterations,
-    method_solv = "EViews" # only 3sls
+    method_solv = estimation3SLS, # only 3sls,
+    inst_list = instruments # endo first, then remaining
 ) %>%
     summary() %>%
     print()
