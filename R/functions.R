@@ -61,7 +61,7 @@ uecm_systemfit <- function(
             residCovWeighted = FALSE,
             maxiter = iterations,
             tol = 1e-5,
-            method3sls = "EViews" # GLS(default), IV, GMM, SCHMIDT, EVIEWS
+            method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
@@ -198,7 +198,7 @@ recm_systemfit <- function(
             residCovWeighted = FALSE,
             maxiter = iterations,
             tol = 1e-5,
-            method3sls = "EViews" # GLS(default), IV, GMM, SCHMIDT, EVIEWS
+            method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
