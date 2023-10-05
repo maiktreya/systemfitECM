@@ -234,12 +234,18 @@ recm_systemfit <- function(
 #' @return A numeric vector with F-test results for each unit.
 #' @export
 systemfit_boundsF_test <- function(
-    system_ecm,
-    units) {
+    lm_result,
+    units,
+    sel_variables) {
     bound_interx <- c()
     for (n in seq_along(units)) {
         ##### BOUND TEST ESTIMATION
-        bound_interx[n] <- aod::wald.test(b = coef(system_ecm$eq[[n]]), Sigma = vcov(system_ecm$eq[[n]]), Terms = 2:4)$result$chi2[1] / 3
+        bound_interx[n] <-
+            aod::wald.test(
+                b = coef(lm_result$eq[[n]]),
+                Sigma = vcov(lm_result$eq[[n]]),
+                Terms = 2:(length(sel_variables) + 1)
+            )$result$chi2[1] / length(sel_variables)
     }
 
     return(bound_interx)

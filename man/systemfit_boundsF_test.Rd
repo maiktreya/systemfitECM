@@ -4,12 +4,12 @@
 \alias{systemfit_boundsF_test}
 \title{Bounds F-Test for Systemfit Error Correction Model}
 \usage{
-systemfit_boundsF_test(system_ecm, units)
+systemfit_boundsF_test(lm_result, units, sel_variables)
 }
 \arguments{
-\item{system_ecm}{An object of class systemfit, representing the ECM.}
-
 \item{units}{A character vector specifying the units or entities for the model.}
+
+\item{system_ecm}{An object of class systemfit, representing the ECM.}
 }
 \value{
 A numeric vector with F-test results for each unit.

@@ -48,7 +48,8 @@ pre_exp %>%
 # Apply and F Bound-Test for equations in systems following Pesaran (2001)
 bounds_F_results <- systemfit_boundsF_test(
     system_ecm = pre_exp,
-    units = countries
+    units = countries,
+    sel_variables = sel_variables
 )
 bounds_F_results %>% print()
 
