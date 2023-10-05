@@ -13,7 +13,7 @@ Description: Enabling the estimation of restricted and unrestricted Error Correc
     - library(data.table) # for simple and performant data manipulation
     - library(plm) # needed for systemfit to handle panel structure
     - library(systemfit) # for FGLS system linear models
-    - library(magrittr) # For piping with %<% without dplyr dependencies
+    - library(magrittr) # For piping with %>% without dplyr dependencies
     - library(aod) # for performing F Bounds test
 
 -----------------------------------------------
@@ -54,8 +54,8 @@ Pacakage functions:
 
 ## PENDING TO IMPLEMENT
 
-- Check F Bound  test for ARDL distinct of (p=1,q=2)
+- Check F Bound  test for ARDL distinct of (p=1,q=2) implemented 04-10-23.
 - Enable beyond case III which is the only version already tested an implemented.
-- CHeck implications of distinct parameters SR for UECM and RECM when:
-  - applied a first step iterated + uniterated or iterated
-  - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated)
+- Check implications of distinct short-run parameters for UECM and RECM when:
+  - applied a first step iterated + uniterated or iterated.
+  - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated).
