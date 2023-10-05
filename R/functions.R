@@ -1,7 +1,6 @@
 #### MODULE FOR INTEGRATION OF ECM INTO SYSTEMFIT
 
 #' Unrestricted Error Correction Model for Systemfit
-#' @importFrom rlang :=
 #' Computes the Unrestricted Error Correction Model for Systemfit.
 #'
 #' @param col_names A character vector of column names.

@@ -7,7 +7,7 @@ Description: Enabling the estimation of restricted and unrestricted Error Correc
     - Type: Package
     - Title: Cointegration Techniques into systemfit
     - Version: 0.1.0
-    - Author: Miguel Garcia Duch
+    - Author: Miguel Garcia-Duch
     - License: GPL-3
     - Imports:
     - library(data.table) # for simple and performant data manipulation

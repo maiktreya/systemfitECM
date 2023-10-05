@@ -2,7 +2,8 @@
 % Please edit documentation in R/functions.R
 \name{uecm_systemfit}
 \alias{uecm_systemfit}
-\title{Unrestricted Error Correction Model for Systemfit}
+\title{Unrestricted Error Correction Model for Systemfit
+Computes the Unrestricted Error Correction Model for Systemfit.}
 \usage{
 uecm_systemfit(
   col_names = c(),
@@ -35,4 +36,5 @@ A model result from systemfit.
 }
 \description{
 Unrestricted Error Correction Model for Systemfit
+Computes the Unrestricted Error Correction Model for Systemfit.
 }
