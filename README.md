@@ -54,8 +54,8 @@ Pacakage functions:
 
 ## PENDING TO IMPLEMENT
 
--> Check F Bound  test for ARDL distinct of (p=1,q=2)
--> Enable beyond case III which is the only version already tested an implemented.
--> CHeck implications of distinct parameters SR for UECM and RECM when:
-    - applied a first step iterated + uniterated or iterated
-    - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated)
+- Check F Bound  test for ARDL distinct of (p=1,q=2)
+- Enable beyond case III which is the only version already tested an implemented.
+- CHeck implications of distinct parameters SR for UECM and RECM when:
+  - applied a first step iterated + uniterated or iterated
+  - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated)
