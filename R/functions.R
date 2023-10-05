@@ -71,7 +71,6 @@ uecm_systemfit <- function(
         control_system <- systemfit::systemfit.control(
             methodResidCov = "noDfCor",
             residCovWeighted = FALSE,
-            maxiter = iterations,
             tol = 1e-5,
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
@@ -208,7 +207,6 @@ recm_systemfit <- function(
         control_system <- systemfit::systemfit.control(
             methodResidCov = "noDfCor",
             residCovWeighted = FALSE,
-            maxiter = iterations,
             tol = 1e-5,
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
