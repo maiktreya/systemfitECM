@@ -234,7 +234,7 @@ recm_systemfit <- function(
 #' @return A numeric vector with F-test results for each unit.
 #' @export
 systemfit_boundsF_test <- function(
-    lm_result,
+    system_ecm,
     units,
     sel_variables) {
     bound_interx <- c()
