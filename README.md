@@ -54,31 +54,8 @@ Pacakage functions:
 
 ## PENDING TO IMPLEMENT
 
--> Check F Bound  test for ARDL distinct of (p=1,q=2) case III which is the only version already tested an implemented.
-
-``` r
-systemfit_boundsF_test <- function(
-    system_ecm,
-    units) {
-    bound_interx <- c()
-    for (n in seq_along(units)) {
-        ##### BOUND TEST ESTIMATION
-        bound_interx[n] <- aod::wald.test(b = coef(system_ecm$eq[[n]]), Sigma = vcov(system_ecm$eq[[n]]), Terms = 2:4)$result$chi2[1] / 3
-    }
-
-    return(bound_interx)
-}
-# possible refraction of code:
-systemfit_boundsF_test <- function(
-    system_ecm,
-    units) {
-    bound_interx <- c()
-    for (n in seq_along(units)) {
-        ##### BOUND TEST ESTIMATION
-        bound_interx[n] <- aod::wald.test(b = coef(system_ecm$eq[[n]]), Sigma = vcov(system_ecm$eq[[n]]), Terms = 2:length(sel_variables)+ 1)$result$chi2[1] / length(sel_variables)
-    }
-
-    return(bound_interx)
-}
-
-```
+-> Check F Bound  test for ARDL distinct of (p=1,q=2)
+-> Enable beyond case III which is the only version already tested an implemented.
+-> CHeck implications of distinct parameters SR for UECM and RECM when:
+    - applied a first step iterated + uniterated or iterated
+    - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated)
