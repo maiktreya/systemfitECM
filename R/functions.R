@@ -73,7 +73,7 @@ uecm_systemfit <- function(
             residCovWeighted = FALSE,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_list))
+        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
