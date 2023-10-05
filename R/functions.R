@@ -242,8 +242,8 @@ systemfit_boundsF_test <- function(
         ##### BOUND TEST ESTIMATION
         bound_interx[n] <-
             aod::wald.test(
-                b = coef(lm_result$eq[[n]]),
-                Sigma = vcov(lm_result$eq[[n]]),
+                b = coef(system_ecm$eq[[n]]),
+                Sigma = vcov(system_ecm$eq[[n]]),
                 Terms = 2:(length(sel_variables) + 1)
             )$result$chi2[1] / length(sel_variables)
     }
