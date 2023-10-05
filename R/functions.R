@@ -25,6 +25,7 @@ uecm_systemfit <- function(
     diff_cols <- c()
     all_lag_cols <- c()
 
+    # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
 
     for (col in col_names_ext) {
@@ -155,10 +156,10 @@ recm_systemfit <- function(
         table_dt = dt
     )
     dt$ect <- ect_test
+
+    # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
 
-
-    # Add lag columns for each lag value
     for (col in col_names_ext) {
         # Add diff column
         diff_col <- paste0(col, "_diff")
