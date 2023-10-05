@@ -40,12 +40,17 @@ pre_exp <- uecm_systemfit(
     iterations = iterations,
     method_solv = estimation3SLS, # only 3sls,
     inst_list = instruments # endo first, then remaining
-) %>%
+)
+pre_exp %>%
     summary() %>%
     print()
 
-
-
+# Apply and F Bound-Test for equations in systems following Pesaran (2001)
+bounds_F_results <- systemfit_boundsF_test(
+    system_ecm = pre_exp,
+    units = countries
+)
+bounds_F_results %>% print()
 
 # Finally, get a Restricted ECM using systemfit methods
 pos_exp <- recm_systemfit(
@@ -58,6 +63,7 @@ pos_exp <- recm_systemfit(
     iterations = iterations,
     method_solv = estimation3SLS, # only 3sls,
     inst_list = instruments # endo first, then remaining
-) %>%
+)
+pos_exp %>%
     summary() %>%
     print()
