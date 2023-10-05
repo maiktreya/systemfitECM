@@ -239,6 +239,7 @@ systemfit_boundsF_test <- function(
     units,
     sel_variables) {
     bound_interx <- c()
+
     for (n in seq_along(units)) {
         ##### BOUND TEST ESTIMATION
         bound_interx[n] <-
