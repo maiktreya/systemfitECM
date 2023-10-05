@@ -54,4 +54,4 @@ Pacakage functions:
 
 ## PENDING TO IMPLEMENT
 
--> Check F Bound  test for ARDL(p=1,q=2) which is the only version already tested an implemented.
+-> Check F Bound  test for ARDL distinct of (p=1,q=2) case III which is the only version already tested an implemented.
