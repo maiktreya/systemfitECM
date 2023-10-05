@@ -11,7 +11,7 @@ library(aod) # for performing F Bounds test
 library(systemfitECM)
 
 # Create the sample dataset
-set.seed(123) # For reproducibility
+set.seed(1234) # For reproducibility
 countries <- c("Austria", "Germany", "Italy")
 period <- 1992:2019
 table_dt <- data.table(
