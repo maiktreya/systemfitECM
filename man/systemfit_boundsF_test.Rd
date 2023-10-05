@@ -10,6 +10,8 @@ systemfit_boundsF_test(system_ecm, units, sel_variables)
 \item{system_ecm}{An object of class systemfit, representing the ECM.}
 
 \item{units}{A character vector specifying the units or entities for the model.}
+
+\item{sel_variables}{Variables included in the cointegration relationship}
 }
 \value{
 A numeric vector with F-test results for each unit.
