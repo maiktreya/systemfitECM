@@ -230,6 +230,7 @@ recm_systemfit <- function(
 #'
 #' @param system_ecm An object of class systemfit, representing the ECM.
 #' @param units A character vector specifying the units or entities for the model.
+#' @param sel_variables Variables included in the cointegration relationship
 #'
 #' @return A numeric vector with F-test results for each unit.
 #' @export
