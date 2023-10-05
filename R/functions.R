@@ -95,10 +95,14 @@ uecm_systemfit <- function(
 #'
 #' @param systemfit_uecm_coefs A list containing coefficients from UECM.
 #' @param sel_variables A character vector of selected variable names.
+#' @param table_dt Dataframe of origin for all variables.
 #'
 #' @return A data.table object containing the error correction term.
 #' @export
-get_ect_systemfit <- function(systemfit_uecm_coefs, sel_variables, table_dt) {
+get_ect_systemfit <- function(
+    systemfit_uecm_coefs,
+    sel_variables,
+    table_dt) {
     coef_exp <- systemfit_uecm_coefs$coefficients
 
     lags_x <- coef_exp[names(systemfit_uecm_coefs$coefficients) %like% "lag"]
