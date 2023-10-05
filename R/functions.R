@@ -45,7 +45,7 @@ uecm_systemfit <- function(
     if (method != "SUR") {
         diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
         inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
-        diff_cols <- diff_cols[!(diff_cols %like% inst_list[-1])]
+        for (i in 2:length(inst_list)) diff_cols <- diff_cols[!(diff_cols %like% inst_list[i])]
     }
 
     # Construct formula strings

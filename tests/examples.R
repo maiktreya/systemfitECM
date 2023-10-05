@@ -27,7 +27,7 @@ table_dt <- data.table(
 # Set remaining control parameters
 sel_variables <- c("tech_exports", "rprices", "fincome") # first is dependant variable in systemfit
 instruments <- c("fincome", "investment", "consumption") # first is endogenous regressor and remaining their instruments.
-method <- "SUR"
+method <- "3SLS"
 estimation3SLS <- "EViews"
 lags <- 1
 iterations <- 1
