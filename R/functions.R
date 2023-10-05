@@ -42,18 +42,17 @@ uecm_systemfit <- function(
         }
     }
 
+    # Construct formula strings
     if (method != "SUR") {
         diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
         inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
         for (i in 2:length(inst_list)) diff_cols <- diff_cols[!(diff_cols %like% inst_list[i])]
     }
-
-    # Construct formula strings
     formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
 
-    # Remove rows with NA values
-    dt <- dt[complete.cases(dt), ]
-    dt <- plm::pdata.frame(dt, index = c("reporter", "year"))
+    # Tidy and transform data.table
+    dt <- dt[complete.cases(dt), ] # Remove rows with NA values
+    dt <- plm::pdata.frame(dt, index = c("reporter", "year")) # Transform to panel dataframe
 
     # Run systemfit model
     if (method == "3SLS") {
@@ -177,22 +176,20 @@ recm_systemfit <- function(
         }
     }
 
+    # Construct formula strings
     if (method != "SUR") {
         diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
         inst_eq <- paste(paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + ")), "+ ect")
         for (i in 2:length(inst_list)) diff_cols <- diff_cols[!(diff_cols %like% inst_list[i])]
     }
-
-    # Construct formula string
     ifelse(nlags >= 2,
         formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1], all_lag_cols), collapse = " + ")), "+ ect"),
         formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1]), collapse = " + ")), "+ ect")
     )
 
-    # Remove rows with NA values
-    dt <- dt[complete.cases(dt), ]
-    # Run systemfit model
-    dt <- plm::pdata.frame(dt, index = c("reporter", "year"))
+    # Tidy and transform data.table
+    dt <- dt[complete.cases(dt), ] # Remove rows with NA values
+    dt <- plm::pdata.frame(dt, index = c("reporter", "year")) # Transform to panel dataframe
 
     # Run systemfit model
     if (method == "3SLS") {
