@@ -155,8 +155,7 @@ recm_systemfit <- function(
         sel_variables = col_names,
         table_dt = dt
     )
-    dt <- cbind(dt, ect_test)
-    ect <- dt$ect_test
+    dt$ect <- ect_test
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
 
 
@@ -180,14 +179,14 @@ recm_systemfit <- function(
 
     if (method != "SUR") {
         diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
-        inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
+        inst_eq <- paste(paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + ")), "+ ect")
         diff_cols <- diff_cols[!(diff_cols %like% inst_list[-1])]
     }
 
     # Construct formula string
     ifelse(nlags >= 2,
-        formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect, all_lag_cols), collapse = " + ")),
-        formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], ect), collapse = " + "))
+        formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1], all_lag_cols), collapse = " + ")), "+ ect"),
+        formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1]), collapse = " + ")), "+ ect")
     )
 
     # Remove rows with NA values
