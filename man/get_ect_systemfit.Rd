@@ -10,6 +10,8 @@ get_ect_systemfit(systemfit_uecm_coefs, sel_variables, table_dt)
 \item{systemfit_uecm_coefs}{A list containing coefficients from UECM.}
 
 \item{sel_variables}{A character vector of selected variable names.}
+
+\item{table_dt}{Dataframe of origin for all variables.}
 }
 \value{
 A data.table object containing the error correction term.
