@@ -29,7 +29,7 @@ sel_variables <- c("tech_exports", "rprices", "fincome") # first is dependant va
 instruments <- c("fincome", "investment", "consumption") # first is endogenous regressor and remaining their instruments.
 method <- "3SLS"
 estimation3SLS <- "EViews"
-lags <- 3
+lags <- 1
 iterations <- 1
 
 # Get an Unrestricted ECM using systemfit methods
