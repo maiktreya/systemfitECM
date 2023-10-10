@@ -128,8 +128,8 @@ get_ect_systemfit <- function(
     for (i in 1:nunits) key <- c(key, rep(i, nperiods))
     transf <- data.table::data.table(ect_x)
     transf <- cbind(key, time, transf)
-    transf[time == nperiods + 1, ect_x := NA]
-    transf[time == nperiods + 1, time := 1]
+    transf[time == nperiods, ect_x := NA]
+    transf[time == nperiods, time := 1]
     transf <- transf[order(key, time)]
     return(transf)
 }
@@ -187,6 +187,16 @@ recm_systemfit <- function(
         diff_col <- paste0(col, "_diff")
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col)
+    }
+    for (col in col_names) {
+        if (nlags >= 2) {
+            # Add lag columns for each lag value
+            for (lag in 2:nlags) {
+                lag_col <- paste0(col, "_diff", lag)
+                dt[, (lag_col) := diff(c(NA, get(col)), differences = lag), by = get(grouping)]
+                all_lag_cols <- c(all_lag_cols, lag_col)
+            }
+        }
     }
 
     # Construct formula strings
