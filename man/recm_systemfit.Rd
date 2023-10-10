@@ -11,6 +11,8 @@ recm_systemfit(
   method = "SUR",
   method_solv = "EViews",
   iterations = 1,
+  nunits = 1,
+  nperiods = 1,
   nlags = 1,
   dt = data.table::data.table(),
   inst_list = c()
@@ -19,14 +21,19 @@ recm_systemfit(
 \arguments{
 \item{col_names}{A character vector of column names.}
 
-\item{uecm_model}{An object of class systemfit, representing the UECM model.
-#' @param grouping Column defining panel units.}
+\item{uecm_model}{An object of class systemfit, representing the UECM model.}
+
+\item{grouping}{Column defining panel units.}
 
 \item{method}{Character string indicating the desired estimation method.}
 
 \item{method_solv}{Character string indicating the solution method. Default is "EViews".}
 
 \item{iterations}{An integer indicating the number of iterations.}
+
+\item{nunits}{An integer reflecting the number of panel units}
+
+\item{nperiods}{An integer specifying the number of time observations by unit.}
 
 \item{nlags}{An integer specifying the number of lags.}
 

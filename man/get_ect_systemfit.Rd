@@ -4,12 +4,22 @@
 \alias{get_ect_systemfit}
 \title{Extract Error Correction Term from Systemfit Model}
 \usage{
-get_ect_systemfit(systemfit_uecm_coefs, sel_variables, table_dt)
+get_ect_systemfit(
+  systemfit_uecm_coefs,
+  sel_variables,
+  nperiods,
+  nunits,
+  table_dt
+)
 }
 \arguments{
 \item{systemfit_uecm_coefs}{A list containing coefficients from UECM.}
 
 \item{sel_variables}{A character vector of selected variable names.}
+
+\item{nperiods}{An integer specifying the number of time observations by unit.}
+
+\item{nunits}{An integer reflecting the number of panel units}
 
 \item{table_dt}{Dataframe of origin for all variables.}
 }

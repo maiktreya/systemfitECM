@@ -95,6 +95,8 @@ uecm_systemfit <- function(
 #' Computes the Error Correction Term from Unrestricted ECM coefficients.
 #'
 #' @param systemfit_uecm_coefs A list containing coefficients from UECM.
+#' @param nperiods An integer specifying the number of time observations by unit.
+#' @param nunits An integer reflecting the number of panel units
 #' @param sel_variables A character vector of selected variable names.
 #' @param table_dt Dataframe of origin for all variables.
 #'
@@ -103,6 +105,8 @@ uecm_systemfit <- function(
 get_ect_systemfit <- function(
     systemfit_uecm_coefs,
     sel_variables,
+    nperiods,
+    nunits,
     table_dt) {
     table_dt <- copy(table_dt)
     coef_exp <- systemfit_uecm_coefs$coefficients
@@ -119,7 +123,9 @@ get_ect_systemfit <- function(
                 abs(lags_x[names(lags_x) %like% sel_variables[1]])
         ect_x <- ect_x - term
     }
+    key <- rep(seq_along(nperiods), nunits)
     transf <- data.table::data.table(ect_x)
+    transf <- cbind(key, transf)
     return(transf)
 }
 
@@ -130,10 +136,12 @@ get_ect_systemfit <- function(
 #'
 #' @param col_names A character vector of column names.
 #' @param uecm_model An object of class systemfit, representing the UECM model.
-#' #' @param grouping Column defining panel units.
+#' @param grouping Column defining panel units.
 #' @param method Character string indicating the desired estimation method.
 #' @param method_solv Character string indicating the solution method. Default is "EViews".
 #' @param iterations An integer indicating the number of iterations.
+#' @param nunits An integer reflecting the number of panel units
+#' @param nperiods An integer specifying the number of time observations by unit.
 #' @param nlags An integer specifying the number of lags.
 #' @param dt A data.table object containing the data.
 #' @param inst_list List of instruments for 2SLS and 3SLS.
@@ -147,6 +155,8 @@ recm_systemfit <- function(
     method = "SUR",
     method_solv = "EViews",
     iterations = 1,
+    nunits = 1,
+    nperiods = 1,
     nlags = 1,
     dt = data.table::data.table(),
     inst_list = c()) {
@@ -158,9 +168,11 @@ recm_systemfit <- function(
     ect_test <- get_ect_systemfit(
         systemfit_uecm_coefs = uecm_model,
         sel_variables = col_names,
-        table_dt = dt
+        table_dt = dt,
+        nperiods = nperiods,
+        nunits = nunits
     )
-    dt$ect <- ect_test
+    dt$ect <- ect_test$transf
 
     # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
