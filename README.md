@@ -89,24 +89,22 @@ Restrictions:
 
 #### Restricted Error Correction Model (RECM)
 
-The RECM is derived from the UECM by imposing certain restrictions. For the sake of this illustration, I'll assume a restriction on the trend term and restrict the adjustment coefficient to long-term equilibrium:
+The RECM can be derived from the UECM by imposing restrictions. In the RECM, the ECT (Error Correction Term) captures the long-run relationship, which gets adjusted in the short run:
 
-$$\Delta y_t = c_0 + \rho y_{t-1} + \sum_{j=1}^{m} \phi_j x_{j,t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=1}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
+$$\Delta y_t = c_0 + \rho ECT_{t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=1}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
 
 Where:
 
 - $\Delta y_t$: Change in the dependent variable at time $t$.
 - $c_0$: Constant term.
-- $\rho$: Restricted coefficient capturing the long-run adjustment to equilibrium.
-- $y_{t-1}$: Lagged level of the dependent variable.
-- $x_{j,t-1}$: Lagged levels of the independent variables.
+- $ECT_{t-1}$: Error Correction Term, which is the lagged residual from the cointegration relationship, typically represented as $y_{t-1} - \phi x_{t-1}$.
+- $\rho$: Coefficient capturing the speed of adjustment back to the long-run equilibrium.
 - $\Delta y_{t-i}, \Delta x_{j,t-l}$: First differences of the dependent and independent variables, respectively.
 - $\epsilon_t$: Error term at time $t$.
 
 Restrictions:
 
-- $\theta_{j,l} = 0$ for some specific lags, based on statistical or theoretical considerations.
-- $\theta_{y,i} = 0$ for some specific lags, based on statistical or theoretical considerations.
+- Certain lags or coefficients might be restricted or omitted based on statistical tests or theoretical considerations.
 
 --------------
 
