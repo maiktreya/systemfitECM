@@ -110,9 +110,9 @@ get_ect_systemfit <- function(
     nunits) {
     table_dt <- copy(table_dt)
     coef_exp <- systemfit_uecm_coefs$coefficients
-
     lags_x <- coef_exp[names(systemfit_uecm_coefs$coefficients) %like% "lag"]
-
+    time <- rep(c(1:nperiods + 1), nunits)
+    key <- c()
     # Initialize ect_x with the first term
     ect_x <- table_dt[, get(sel_variables[1])]
 
@@ -123,13 +123,12 @@ get_ect_systemfit <- function(
                 abs(lags_x[names(lags_x) %like% sel_variables[1]])
         ect_x <- ect_x - term
     }
-    time <- rep(c(1:nperiods + 1), nunits)
-    key <- c()
+
     for (i in 1:nunits) key <- c(key, rep(i, nperiods))
     transf <- data.table::data.table(ect_x)
     transf <- cbind(key, time, transf)
-    transf[time == nperiods, ect_x := NA]
-    transf[time == nperiods, time := 1]
+    transf[time == nperiods + 1, ect_x := NA]
+    transf[time == nperiods + 1, time := 1]
     transf <- transf[order(key, time)]
     return(transf)
 }
