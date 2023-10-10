@@ -24,6 +24,7 @@ uecm_systemfit <- function(
     inst_list = c()) {
     diff_cols <- c()
     all_lag_cols <- c()
+    dt <- copy(dt)
 
     # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
@@ -102,6 +103,7 @@ get_ect_systemfit <- function(
     systemfit_uecm_coefs,
     sel_variables,
     table_dt) {
+    table_dt <- copy(table_dt)
     coef_exp <- systemfit_uecm_coefs$coefficients
 
     lags_x <- coef_exp[names(systemfit_uecm_coefs$coefficients) %like% "lag"]
@@ -148,6 +150,7 @@ recm_systemfit <- function(
     inst_list = c()) {
     diff_cols <- c()
     all_lag_cols <- c()
+    dt <- copy(dt)
 
     # get and incorporate ECT from UECM
     ect_test <- get_ect_systemfit(
