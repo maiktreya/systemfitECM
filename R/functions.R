@@ -128,8 +128,8 @@ get_ect_systemfit <- function(
     for (i in 1:nunits) key <- c(key, rep(i, nperiods))
     transf <- data.table::data.table(ect_x)
     transf <- cbind(key, time, transf)
-    transf[time == 29, ect_x := NA]
-    transf[time == 29, time := 1]
+    transf[time == nperiods + 1, ect_x := NA]
+    transf[time == nperiods + 1, time := 1]
     transf <- transf[order(key, time)]
     return(transf)
 }
