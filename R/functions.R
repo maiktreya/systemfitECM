@@ -130,7 +130,7 @@ get_ect_systemfit <- function(
     transf <- cbind(key, time, transf)
     transf[time == 29, ect_x := NA]
     transf[time == 29, time := 1]
-    transf[order(key, time)]
+    tranfs <- tranfs[order(key, time)]
     return(transf)
 }
 

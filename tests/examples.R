@@ -82,5 +82,4 @@ ect_test <- get_ect_systemfit(
     table_dt = table_dt
 )
 ect_test %>%
-    summary() %>%
     print()
