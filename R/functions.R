@@ -1,8 +1,8 @@
 #### MODULE FOR INTEGRATION OF ECM INTO SYSTEMFIT
-
+#'
 #' Unrestricted Error Correction Model for Systemfit
 #' Computes the Unrestricted Error Correction Model for Systemfit.
-#'
+#' @import data.table
 #' @param col_names A character vector of column names.
 #' @param nlags An integer specifying the number of lags.
 #' @param method Character string indicating the desired estimation method.
