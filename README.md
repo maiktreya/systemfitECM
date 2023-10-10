@@ -42,13 +42,77 @@ Or run the code included in the script for a working application on simulated da
 
 Pacakage functions:
 
-- **uecm_systemfit**: Estimates Unrestricted-ECM
-  - first listed variable is used as dependant variable.
-  - if instruments are included, the first listed variable is used as the endogenous variable and the remaining elements their instruments.
-- **get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by other functions.
-- **recm_systemfit**: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
-- **systemfit_boundsF_test**: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
-  - corresponding p-values should be taken from the original article or Nayaran (2003). This version only works for case III (intercept, no time trend.)
+--------------
+
+**uecm_systemfit**: Estimates Unrestricted-ECM
+
+- first listed variable is used as dependant variable.
+- if instruments are included, the first listed variable is used as the endogenous variable and the remaining elements their instruments.
+
+#### Unrestricted Error Correction Model (UECM)
+
+The UECM can be represented in a more generalized format as:
+
+$$\Delta y_t = c_0 + c_1 t + \pi_y y_{t-1} + \sum_{j=1}^{k} \pi_j x_{j,t-1} + \sum_{i=1}^{p-1} \psi_{y,i} \Delta y_{t-i} + \sum_{j=1}^{k} \sum_{l=1}^{q_j-1} \psi_{j,l} \Delta x_{j,t-l} + \sum_{j=1}^{k} \omega_j \Delta x_{j,t} + \epsilon_t$$
+
+Where:
+
+- $\Delta y_t$: Change in the dependent variable at time $t$.
+
+- $c_0$: Constant term.
+
+- $c_1$: Trend coefficient.
+
+- $\pi_y$: Coefficient of the lagged level of the dependent variable, capturing the long-run adjustment to equilibrium.
+
+- $y_{t-1}$: Lagged level of the dependent variable.
+
+- $x_{j,t-1}$: Lagged levels of the independent variables.
+
+- $\Delta y_{t-i}, \Delta x_{j,t-l}$: First differences of the dependent and independent variables, respectively.
+
+- $\epsilon_t$: Error term at time$t$.
+
+Restrictions:
+
+- $\psi_{j,l} = 0$ for all $q_j \leq 1$
+
+- $\psi_{y,i} = 0$ if $p = 1$
+
+- --------------
+
+**get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by other functions.
+
+--------------
+
+**recm_systemfit**: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
+
+#### Restricted Error Correction Model (RECM)
+
+The RECM is derived from the UECM by imposing certain restrictions. For the sake of this illustration, I'll assume a restriction on the trend term and restrict the adjustment coefficient to long-term equilibrium:
+
+$$\Delta y_t = c_0 + \rho y_{t-1} + \sum_{j=1}^{m} \phi_j x_{j,t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=1}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
+
+Where:
+
+- $\Delta y_t$: Change in the dependent variable at time $t$.
+- $c_0$: Constant term.
+- $\rho$: Restricted coefficient capturing the long-run adjustment to equilibrium.
+- $y_{t-1}$: Lagged level of the dependent variable.
+- $x_{j,t-1}$: Lagged levels of the independent variables.
+- $\Delta y_{t-i}, \Delta x_{j,t-l}$: First differences of the dependent and independent variables, respectively.
+- $\epsilon_t$: Error term at time $t$.
+
+Restrictions:
+
+- $\theta_{j,l} = 0$ for some specific lags, based on statistical or theoretical considerations.
+- $\theta_{y,i} = 0$ for some specific lags, based on statistical or theoretical considerations.
+
+--------------
+
+**systemfit_boundsF_test**: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
+
+- corresponding p-values should be taken from the original article or Nayaran (2003). This version only works for case III (intercept, no time trend.)
 
 ------------------------------------------------
 
@@ -63,5 +127,6 @@ Pacakage functions:
 ### REVS
 
 #### 10/10/2023
+
 - Fixed computation of ECT. For that purpose two additional parameters are set for its calculation and the calculation of associated RECM (nunits and nperiods).
 - Fixed RECM parameterization (lags were removed and only multi order diffs are included along ECT.
