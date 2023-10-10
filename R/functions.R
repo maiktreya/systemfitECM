@@ -188,16 +188,6 @@ recm_systemfit <- function(
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col)
     }
-    for (col in col_names) {
-        if (nlags >= 2) {
-            # Add lag columns for each lag value
-            for (lag in 2:nlags) {
-                lag_col <- paste0(col, "_lag", lag)
-                dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
-                all_lag_cols <- c(all_lag_cols, lag_col)
-            }
-        }
-    }
 
     # Construct formula strings
     if (method != "SUR") {
