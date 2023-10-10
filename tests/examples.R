@@ -55,6 +55,19 @@ bounds_F_results <- systemfit_boundsF_test(
 )
 bounds_F_results %>% print()
 
+
+# get an example panel series ECT
+ect_test <- get_ect_systemfit(
+    systemfit_uecm_coefs = pre_exp,
+    nperiods = length(period),
+    nunits = length(countries),
+    sel_variables = sel_variables,
+    table_dt = table_dt
+)
+ect_test %>%
+    print()
+
+
 # Finally, get a Restricted ECM using systemfit methods
 pos_exp <- recm_systemfit(
     uecm_model = pre_exp,
@@ -71,15 +84,4 @@ pos_exp <- recm_systemfit(
 )
 pos_exp %>%
     summary() %>%
-    print()
-
-# get an example panel series ECT
-ect_test <- get_ect_systemfit(
-    systemfit_uecm_coefs = pre_exp,
-    nperiods = length(period),
-    nunits = length(countries),
-    sel_variables = sel_variables,
-    table_dt = table_dt
-)
-ect_test %>%
     print()
