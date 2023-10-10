@@ -66,7 +66,9 @@ uecm_systemfit <- function(
             tol = 1e-5,
             method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+        )
     }
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
@@ -74,7 +76,9 @@ uecm_systemfit <- function(
             residCovWeighted = FALSE,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+        )
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
@@ -83,7 +87,9 @@ uecm_systemfit <- function(
             maxiter = iterations,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system)
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system
+        )
     }
 
     return(lm_result)
@@ -222,7 +228,9 @@ recm_systemfit <- function(
             tol = 1e-5,
             method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+        )
     }
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
@@ -230,7 +238,9 @@ recm_systemfit <- function(
             residCovWeighted = FALSE,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system, inst = as.formula(inst_eq))
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+        )
     }
     if (method == "SUR") {
         control_system <- systemfit::systemfit.control(
@@ -239,7 +249,9 @@ recm_systemfit <- function(
             maxiter = iterations,
             tol = 1e-5,
         )
-        lm_result <- systemfit::systemfit(as.formula(formula_str), data = dt, method = method, control = control_system)
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method, control = control_system
+        )
     }
     return(lm_result)
 }
