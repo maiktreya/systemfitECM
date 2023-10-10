@@ -52,10 +52,16 @@ Pacakage functions:
 
 ------------------------------------------------
 
-## PENDING TO IMPLEMENT
+### PENDING TO IMPLEMENT
 
 - Check F Bound  test for ARDL distinct of (p=1,q=2) implemented 04-10-23.
 - Enable beyond case III which is the only version already tested an implemented.
 - Check implications of distinct short-run parameters for UECM and RECM when:
   - applied a first step iterated + uniterated or iterated.
   - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated).
+
+### REVS
+
+#### 10/10/2023
+- Fixed computation of ECT. For that purpose two additional parameters are set for its calculation and the calculation of associated RECM (nunits and nperiods).
+- Fixed RECM parameterization (lags were removed and only multi order diffs are included along ECT.
