@@ -123,7 +123,7 @@ get_ect_systemfit <- function(
                 abs(lags_x[names(lags_x) %like% sel_variables[1]])
         ect_x <- ect_x - term
     }
-    key <- rep(c(2:nperiods + 1), nunits)
+    key <- rep(c(1:nperiods + 1), nunits)
     transf <- data.table::data.table(ect_x)
     transf <- cbind(key, transf)
     return(transf)
