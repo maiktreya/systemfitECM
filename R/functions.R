@@ -5,6 +5,7 @@
 #' @import data.table
 #' @param col_names A character vector of column names.
 #' @param nlags An integer specifying the number of lags.
+#' @param grouping Column defining panel units.
 #' @param method Character string indicating the desired estimation method.
 #' @param method_solv Character string indicating the solution method. Default is "EViews".
 #' @param iterations An integer indicating the number of iterations.
@@ -129,6 +130,7 @@ get_ect_systemfit <- function(
 #'
 #' @param col_names A character vector of column names.
 #' @param uecm_model An object of class systemfit, representing the UECM model.
+#' #' @param grouping Column defining panel units.
 #' @param method Character string indicating the desired estimation method.
 #' @param method_solv Character string indicating the solution method. Default is "EViews".
 #' @param iterations An integer indicating the number of iterations.

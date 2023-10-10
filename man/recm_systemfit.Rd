@@ -19,7 +19,8 @@ recm_systemfit(
 \arguments{
 \item{col_names}{A character vector of column names.}
 
-\item{uecm_model}{An object of class systemfit, representing the UECM model.}
+\item{uecm_model}{An object of class systemfit, representing the UECM model.
+#' @param grouping Column defining panel units.}
 
 \item{method}{Character string indicating the desired estimation method.}
 

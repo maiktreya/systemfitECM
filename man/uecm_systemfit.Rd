@@ -21,6 +21,8 @@ uecm_systemfit(
 
 \item{nlags}{An integer specifying the number of lags.}
 
+\item{grouping}{Column defining panel units.}
+
 \item{method}{Character string indicating the desired estimation method.}
 
 \item{method_solv}{Character string indicating the solution method. Default is "EViews".}
