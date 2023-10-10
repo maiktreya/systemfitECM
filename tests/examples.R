@@ -73,11 +73,14 @@ pos_exp %>%
     summary() %>%
     print()
 
-
-aa <- get_ect_systemfit(
+# get an example panel series ECT
+ect_test <- get_ect_systemfit(
     systemfit_uecm_coefs = pre_exp,
     nperiods = length(period),
     nunits = length(countries),
     sel_variables = sel_variables,
     table_dt = table_dt
 )
+ect_test %>%
+    summary() %>%
+    print()
