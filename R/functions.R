@@ -172,7 +172,7 @@ recm_systemfit <- function(
         nperiods = nperiods,
         nunits = nunits
     )
-    dt$ect <- ect_test$transf
+    dt$ect <- ect_test$ect_x
 
     # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
