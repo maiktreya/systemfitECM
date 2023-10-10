@@ -193,7 +193,7 @@ recm_systemfit <- function(
             # Add lag columns for each lag value
             for (lag in 2:nlags) {
                 lag_col <- paste0(col, "_diff", lag)
-                dt[, (lag_col) := diff(c(NA, get(col)), differences = lag), by = get(grouping)]
+                dt[, (lag_col) := diff(c(rep(NA, lag), get(col)), differences = lag), by = get(grouping)]
                 all_lag_cols <- c(all_lag_cols, lag_col)
             }
         }
