@@ -105,9 +105,9 @@ uecm_systemfit <- function(
 get_ect_systemfit <- function(
     systemfit_uecm_coefs,
     sel_variables,
+    table_dt,
     nperiods,
-    nunits,
-    table_dt) {
+    nunits) {
     table_dt <- copy(table_dt)
     coef_exp <- systemfit_uecm_coefs$coefficients
 

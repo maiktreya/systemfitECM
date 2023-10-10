@@ -64,6 +64,8 @@ pos_exp <- recm_systemfit(
     grouping = "reporter",
     method = method,
     iterations = iterations,
+    nunits = length(countries),
+    nperiods = length(period),
     method_solv = estimation3SLS, # only 3sls,
     inst_list = instruments # endo first, then remaining
 )

@@ -7,9 +7,9 @@
 get_ect_systemfit(
   systemfit_uecm_coefs,
   sel_variables,
+  table_dt,
   nperiods,
-  nunits,
-  table_dt
+  nunits
 )
 }
 \arguments{
@@ -17,11 +17,11 @@ get_ect_systemfit(
 
 \item{sel_variables}{A character vector of selected variable names.}
 
+\item{table_dt}{Dataframe of origin for all variables.}
+
 \item{nperiods}{An integer specifying the number of time observations by unit.}
 
 \item{nunits}{An integer reflecting the number of panel units}
-
-\item{table_dt}{Dataframe of origin for all variables.}
 }
 \value{
 A data.table object containing the error correction term.
