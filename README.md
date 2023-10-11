@@ -44,7 +44,7 @@ Pacakage functions:
 
 --------------
 
-**uecm_systemfit**: Estimates Unrestricted-ECM:
+**uecm_systemfit**: Estimates Unrestricted-ECM.
 
     - param col_names: A character vector of column names.
     - param nlags: An integer specifying the number of lags.
