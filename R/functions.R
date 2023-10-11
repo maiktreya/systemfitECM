@@ -36,8 +36,16 @@ uecm_systemfit <- function(
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col) # Populate diff_cols vector
     }
-    for (col in col_names) {
-        # Add lag columns for each lag value
+    for (col in col_names[1]) {
+        # Add single lag for the endogenous variable
+        for (lag in 1) {
+            lag_col <- paste0(col, "_lag", lag)
+            dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
+            all_lag_cols <- c(all_lag_cols, lag_col) # Populate all_lag_cols vector
+        }
+    }
+    for (col in col_names[-1]) {
+        # Add lag columns for each other lag value
         for (lag in 1:nlags) {
             lag_col <- paste0(col, "_lag", lag)
             dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
