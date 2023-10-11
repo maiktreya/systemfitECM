@@ -81,7 +81,7 @@ Restrictions:
 
 - --------------
 
-**get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by other functions.
+**get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by RECM can also be directly called.
 
 --------------
 
@@ -102,10 +102,6 @@ Where:
 - $\Delta y_{t-i}, \Delta x_{j,t-l}$: First differences of the dependent and independent variables, respectively.
 - $\epsilon_t$: Error term at time $t$.
 
-Restrictions:
-
-- Certain lags or coefficients might be restricted or omitted based on statistical tests or theoretical considerations.
-
 --------------
 
 **systemfit_boundsF_test**: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
@@ -114,10 +110,10 @@ Restrictions:
 
 ------------------------------------------------
 
-### PENDING TO IMPLEMENT
+### LIMITATIONS AND PENDING FUNCTIONALITY
 
-- Check F Bound  test for ARDL distinct of (p=1,q=2) implemented 04-10-23.
-- Enable beyond case III which is the only version already tested an implemented.
+- Both UECM and RECM implementations work for a common number of lags $n = p = q_j$ for any $j$ given an $ARDL(n,p,q_j)$. Implementation of different lag orders is pending.
+- Check F Bound  test for ARDL. Enable beyond case III which is the only version already tested an implemented.
 - Check implications of distinct short-run parameters for UECM and RECM when:
   - applied a first step iterated + uniterated or iterated.
   - to keep reporting a "pure" reparametrization iterations should be set to 1 (not iterated).
