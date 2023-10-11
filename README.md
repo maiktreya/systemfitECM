@@ -44,7 +44,16 @@ Pacakage functions:
 
 --------------
 
-**uecm_systemfit**: Estimates Unrestricted-ECM
+**uecm_systemfit**: Estimates Unrestricted-ECM:
+
+    - param col_names: A character vector of column names.
+    - param nlags: An integer specifying the number of lags.
+    - param grouping: Column defining panel units.
+    - param method: Character string indicating the desired estimation method.
+    - param method_solv: Character string indicating the solution method. Default is "EViews".
+    - param iterations: An integer indicating the number of iterations.
+    - param dt: A data.table object containing the data.
+    - param inst_list: List of instruments for 2SLS and 3SLS.
 
 - first listed variable is used as dependant variable.
 - if instruments are included, the first listed variable is used as the endogenous variable and the remaining elements their instruments.
@@ -83,9 +92,27 @@ Restrictions:
 
 **get_ect_systemfit**: Generates a Error Correction Term serie for a given UECM. Called internally by RECM can also be directly called.
 
+    - param systemfit_uecm_coefs: A list containing coefficients from UECM.
+    - param nperiods: An integer specifying the number of time observations by unit.
+    - param nunits: An integer reflecting the number of panel units
+    - param sel_variables: A character vector of selected variable names.
+    - param table_dt: Dataframe of origin for all variables.
+
 --------------
 
 **recm_systemfit**: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
+
+    - param col_names: A character vector of column names.
+    - param uecm_model: An object of class systemfit, representing the UECM model.
+    - param grouping: Column defining panel units.
+    - param method: Character string indicating the desired estimation method.
+    - param method_solv: Character string indicating the solution method. Default is "EViews".
+    - param iterations: An integer indicating the number of iterations.
+    - param nunits: An integer reflecting the number of panel units
+    - param nperiods: An integer specifying the number of time observations by unit.
+    - param nlags: An integer specifying the number of lags.
+    - param dt: A data.table object containing the data.
+    - param inst_list: List of instruments for 2SLS and 3SLS.
 
 ##### Restricted Error Correction Model (RECM)
 
@@ -105,6 +132,10 @@ Where:
 --------------
 
 **systemfit_boundsF_test**: Pesaran et al. (2001) F-Bounds Test (requires a previous obj. class uecm_systemfit).
+
+    - param system_ecm: An object of class systemfit, representing the ECM.
+    - param units: A character vector specifying the units or entities for the model.
+    - param sel_variables: Variables included in the cointegration relationship
 
 - corresponding p-values should be taken from the original article or Nayaran (2003). This version only works for case III (intercept, no time trend.)
 
