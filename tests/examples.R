@@ -32,6 +32,7 @@ estimation3SLS <- "EViews"
 lags <- 2
 iterations <- 1
 
+
 # Get an Unrestricted ECM using systemfit methods
 pre_exp <- uecm_systemfit(
     dt = table_dt,
@@ -46,6 +47,7 @@ pre_exp <- uecm_systemfit(
 pre_exp %>%
     summary() %>%
     print()
+
 
 # Apply and F Bound-Test for equations in systems following Pesaran (2001)
 bounds_F_results <- systemfit_boundsF_test(
