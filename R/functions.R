@@ -25,7 +25,7 @@ uecm_systemfit <- function(
     inst_list = c()) {
     diff_cols <- c()
     all_lag_cols <- c()
-    dt <- copy(dt)
+    dt <- copy(dt) # to avoid side-effects on the original data.table object
 
     # Append lags and diffs to dataframe an create its associated vector of names
     ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
@@ -73,8 +73,7 @@ uecm_systemfit <- function(
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
             methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            tol = 1e-5,
+            residCovWeighted = FALSE
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str),
             data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
@@ -235,8 +234,7 @@ recm_systemfit <- function(
     if (method == "2SLS") {
         control_system <- systemfit::systemfit.control(
             methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            tol = 1e-5,
+            residCovWeighted = FALSE
         )
         lm_result <- systemfit::systemfit(as.formula(formula_str),
             data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
@@ -274,7 +272,7 @@ systemfit_boundsF_test <- function(
     bound_interx <- c()
 
     for (n in seq_along(units)) {
-        ##### BOUND TEST ESTIMATION
+        ##### Bound test computation applying F form of Wald Test
         bound_interx[n] <-
             aod::wald.test(
                 b = coef(system_ecm$eq[[n]]),
