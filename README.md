@@ -112,7 +112,7 @@ Where:
 
 ### LIMITATIONS AND PENDING FUNCTIONALITY
 
-- Both UECM and RECM implementations work for a common number of lags $ p = q_1... = q_j$ for any $q$ given an $ARDL(p,q_1,...q_j)$. Implementation of different lag orders is pending.
+- Both UECM and RECM implementations work for a common number of lags $(p = q_1... = q_j)$ for any $q$ given an $ARDL(p,q_1,...q_j)$. Implementation of different lag orders is pending.
 - Check F Bound  test for ARDL. Enable beyond case III which is the only version already tested an implemented.
 - Check implications of distinct short-run parameters for UECM and RECM when:
   - applied a first step iterated + uniterated or iterated.
