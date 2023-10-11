@@ -49,9 +49,9 @@ Pacakage functions:
 - first listed variable is used as dependant variable.
 - if instruments are included, the first listed variable is used as the endogenous variable and the remaining elements their instruments.
 
-#### Unrestricted Error Correction Model (UECM)
+##### Unrestricted Error Correction Model (UECM)
 
-The UECM can be represented in a more generalized format as:
+Given an $ARDL(n,p,q_j)$ its UECM reparametrization can be represented in a  generalized form as:
 
 $$\Delta y_t = c_0 + c_1 t + \pi_y y_{t-1} + \sum_{j=1}^{k} \pi_j x_{j,t-1} + \sum_{i=1}^{p-1} \psi_{y,i} \Delta y_{t-i} + \sum_{j=1}^{k} \sum_{l=1}^{q_j-1} \psi_{j,l} \Delta x_{j,t-l} + \sum_{j=1}^{k} \omega_j \Delta x_{j,t} + \epsilon_t$$
 
@@ -87,9 +87,9 @@ Restrictions:
 
 **recm_systemfit**: Estimates Restricted-ECM (requires a previous obj. class uecm_systemfit).
 
-#### Restricted Error Correction Model (RECM)
+##### Restricted Error Correction Model (RECM)
 
-The RECM can be derived from the UECM by imposing restrictions. In the RECM, the ECT (Error Correction Term) captures the long-run relationship, which gets adjusted in the short run:
+The RECM can be derived from the UECM by imposing restrictions. In the RECM, the ECT (Error Correction Term) captures the long-run relationship and the speed of adjustment towards equilibrium (assuming a cointegration relationship exists pre-testing its UECM with F Bounds Test):
 
 $$\Delta y_t = c_0 + \rho ECT_{t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=1}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
 
