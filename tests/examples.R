@@ -53,7 +53,8 @@ bounds_F_results <- systemfit_boundsF_test(
     units = countries,
     sel_variables = sel_variables
 )
-bounds_F_results %>% print()
+bounds_F_results %>%
+    print()
 
 
 # get an example panel series ECT
