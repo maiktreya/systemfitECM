@@ -127,4 +127,4 @@ Restrictions:
 #### 10/10/2023
 
 - Fixed computation of ECT. For that purpose two additional parameters are set for its calculation and the calculation of associated RECM (nunits and nperiods).
-- Fixed RECM parameterization (lags were removed and only multi order diffs are included along ECT.
+- Fixed RECM parameterization (lags were removed and only multi order diffs are included along ECT).
