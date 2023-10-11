@@ -51,7 +51,7 @@ Pacakage functions:
 
 ##### Unrestricted Error Correction Model (UECM)
 
-Given an $ARDL(n,p,q_j)$ its UECM reparametrization can be represented in a  generalized form as:
+Given an $ARDL(p,q_1,...q_j)$ its UECM reparametrization can be represented in a  generalized form as:
 
 $$\Delta y_t = c_0 + c_1 t + \pi_y y_{t-1} + \sum_{j=1}^{k} \pi_j x_{j,t-1} + \sum_{i=1}^{p-1} \psi_{y,i} \Delta y_{t-i} + \sum_{j=1}^{k} \sum_{l=1}^{q_j-1} \psi_{j,l} \Delta x_{j,t-l} + \sum_{j=1}^{k} \omega_j \Delta x_{j,t} + \epsilon_t$$
 
@@ -91,7 +91,7 @@ Restrictions:
 
 The RECM can be derived from the UECM by imposing restrictions. In the RECM, the ECT (Error Correction Term) captures the long-run relationship and the speed of adjustment towards equilibrium (assuming a cointegration relationship exists pre-testing its UECM with F Bounds Test):
 
-$$\Delta y_t = c_0 + \rho ECT_{t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=1}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
+$$\Delta y_t = c_0 + \rho ECT_{t-1} + \sum_{i=1}^{p-1} \theta_{y,i} \Delta y_{t-i} + \sum_{j=1}^{m} \sum_{l=0}^{q_j-1} \theta_{j,l} \Delta x_{j,t-l} + \epsilon_t$$
 
 Where:
 
@@ -112,7 +112,7 @@ Where:
 
 ### LIMITATIONS AND PENDING FUNCTIONALITY
 
-- Both UECM and RECM implementations work for a common number of lags $n = p = q_j$ for any $j$ given an $ARDL(n,p,q_j)$. Implementation of different lag orders is pending.
+- Both UECM and RECM implementations work for a common number of lags $ p = q_1... = q_j$ for any $q$ given an $ARDL(p,q_1,...q_j)$. Implementation of different lag orders is pending.
 - Check F Bound  test for ARDL. Enable beyond case III which is the only version already tested an implemented.
 - Check implications of distinct short-run parameters for UECM and RECM when:
   - applied a first step iterated + uniterated or iterated.
