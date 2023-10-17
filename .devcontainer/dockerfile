@@ -1,6 +1,0 @@
-# R version: 4, 4.1, 4.0
-ARG VARIANT="4"
-FROM rocker/tidyverse:${VARIANT}
-RUN install2.r --error --skipinstalled --ncpus -1 \
-devtools \
-tidyverse \

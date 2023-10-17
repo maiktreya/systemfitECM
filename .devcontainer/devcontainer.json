@@ -1,4 +1,0 @@
-"settings": {
-    "r.rterm.linux": "/usr/local/bin/radian",
-    },
-    "postCreateCommand": "sudo rstudio-server start",
