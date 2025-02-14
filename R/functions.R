@@ -1,101 +1,96 @@
 #### MODULE FOR INTEGRATION OF ECM INTO SYSTEMFIT
+
+#' Estimate an Unrestricted Error Correction Model (UECM) using systemfit
 #'
-#' Unrestricted Error Correction Model for Systemfit
-#' Computes the Unrestricted Error Correction Model for Systemfit.
-#' @import data.table
-#' @param col_names A character vector of column names.
-#' @param nlags An integer specifying the number of lags.
-#' @param grouping Column defining panel units.
-#' @param method Character string indicating the desired estimation method.
-#' @param method_solv Character string indicating the solution method. Default is "EViews".
-#' @param iterations An integer indicating the number of iterations.
-#' @param dt A data.table object containing the data.
-#' @param inst_list List of instruments for 2SLS and 3SLS.
+#' Estimates a UECM for panel data using \code{systemfit}.
 #'
-#' @return A model result from systemfit.
+#' @param data A data.frame or data.table.
+#' @param col_names Character vector of variable names.
+#' @param nlags Integer, number of lags.
+#' @param grouping Character string, name of the grouping column.
+#' @param method "SUR", "2SLS", or "3SLS".
+#' @param method_solv Solution method for 3SLS (see \code{systemfit.control}).
+#' @param iterations Integer, max iterations.
+#' @param inst_list Character vector of instruments (for 2SLS/3SLS).
+#'
+#' @return A \code{systemfit} object.
+#' @examples
+#' # Example (replace with your data)
+#' # data(your_data)
+#' # uecm_model <- uecm_systemfit(data = your_data,...)
+#' @importFrom data.table copy shift
+#' @importFrom plm pdata.frame
+#' @importFrom systemfit systemfit systemfit.control
 #' @export
-uecm_systemfit <- function(
-    col_names = c(),
-    nlags = 1,
-    grouping,
-    method = "SUR",
-    method_solv = "EViews",
-    iterations = 1,
-    dt = data.table::data.table(),
-    inst_list = c()) {
-    diff_cols <- c()
-    all_lag_cols <- c()
-    dt <- copy(dt) # to avoid side-effects on the original data.table object
+uecm_systemfit <- function(data, col_names, nlags = 1, grouping, method = "SUR",
+                           method_solv = "EViews", iterations = 1, inst_list = NULL) {
+    dt <- data.table::copy(data)
+    stopifnot(is.data.frame(dt) || is.data.table(dt), "data must be a data.frame or data.table")
+    stopifnot(is.character(col_names), "col_names must be a character vector")
+    stopifnot(is.numeric(nlags), "nlags must be numeric")
+    stopifnot(nlags >= 0, "nlags must be non-negative")
+    stopifnot(is.character(grouping), "grouping must be a character string")
+    stopifnot(grouping %in% names(dt), paste("grouping variable", grouping, "not found in data"))
+    stopifnot(method %in% c("SUR", "2SLS", "3SLS"), "method must be one of 'SUR', '2SLS', '3SLS'")
 
-    # Append lags and diffs to dataframe an create its associated vector of names
-    ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
+    if (method %in% c("2SLS", "3SLS")) {
+        stopifnot(!is.null(inst_list), "inst_list must be provided for 2SLS/3SLS")
+        stopifnot(is.character(inst_list), "inst_list must be a character vector")
+        stopifnot(inst_list %in% col_names, "First element of inst_list must be an endogenous variable")
+    }
 
-    for (col in col_names_ext) {
-        # Add diff column
+    diff_cols <- character()
+    all_lag_cols <- character()
+    all_inst_cols <- character() # for instruments
+
+    for (col in col_names) {
         diff_col <- paste0(col, "_diff")
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
-        diff_cols <- c(diff_cols, diff_col) # Populate diff_cols vector
-    }
-    for (col in col_names[1]) {
-        # Add single lag for the endogenous variable
-        for (lag in 1) {
-            lag_col <- paste0(col, "_lag", lag)
-            dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
-            all_lag_cols <- c(all_lag_cols, lag_col) # Populate all_lag_cols vector
-        }
-    }
-    for (col in col_names[-1]) {
-        # Add lag columns for each other lag value
+        diff_cols <- c(diff_cols, diff_col)
         for (lag in 1:nlags) {
             lag_col <- paste0(col, "_lag", lag)
             dt[, (lag_col) := data.table::shift(get(col), n = lag, type = "lag"), by = get(grouping)]
-            all_lag_cols <- c(all_lag_cols, lag_col) # Populate all_lag_cols vector
+            all_lag_cols <- c(all_lag_cols, lag_col)
         }
     }
 
-    # Construct formula strings
-    if (method != "SUR") {
-        diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
-        inst_eq <- paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + "))
-        for (i in 2:length(inst_list)) diff_cols <- diff_cols[!(diff_cols %like% inst_list[i])]
+    if (method %in% c("2SLS", "3SLS")) {
+        for (inst in inst_list[-1]) { # Instruments (excluding endogenous variable)
+            for (lag in 1:nlags) {
+                inst_col <- paste0(inst, "_lag", lag)
+                dt[, (inst_col) := data.table::shift(get(inst), n = lag, type = "lag"), by = get(grouping)]
+                all_inst_cols <- c(all_inst_cols, inst_col)
+            }
+        }
     }
-    formula_str <- paste(diff_cols[1], "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
 
-    # Tidy and transform data.table
-    dt <- dt[complete.cases(dt), ] # Remove rows with NA values
-    dt <- plm::pdata.frame(dt, index = c("reporter", "year")) # Transform to panel dataframe
+    formula_str <- paste(diff_cols, "~", paste(c(diff_cols[-1], all_lag_cols), collapse = " + "))
 
-    # Run systemfit model
+    if (method %in% c("2SLS", "3SLS")) {
+        inst_eq <- paste("~", paste(c(all_lag_cols, all_inst_cols), collapse = " + ")) # Instruments
+    }
+
+    dt <- dt[complete.cases(dt), ]
+    dt <- plm::pdata.frame(dt, index = unique(grouping)) # Use unique to avoid error if grouping has many names
+    control_system <- systemfit::systemfit.control(
+        methodResidCov = "noDfCor", residCovWeighted = FALSE, maxiter = iterations, tol = 1e-5
+    )
+
     if (method == "3SLS") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            maxiter = iterations,
-            tol = 1e-5,
-            method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
-        )
+        control_system$method3sls <- method_solv
         lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+            data = dt, method = method,
+            control = control_system, inst = as.formula(inst_eq)
         )
-    }
-    if (method == "2SLS") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE
-        )
+    } else if (method == "2SLS") {
         lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+            data = dt, method = method,
+            control = control_system, inst = as.formula(inst_eq)
         )
-    }
-    if (method == "SUR") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            maxiter = iterations,
-            tol = 1e-5,
-        )
+    } else {
         lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system
+            data = dt, method = method,
+            control = control_system
         )
     }
 
@@ -103,37 +98,40 @@ uecm_systemfit <- function(
 }
 
 
-#' Extract Error Correction Term from Systemfit Model
+#' Extract Error Correction Term (ECT)
 #'
-#' Computes the Error Correction Term from Unrestricted ECM coefficients.
+#' Computes the ECT from UECM coefficients.
 #'
-#' @param systemfit_uecm_coefs A list containing coefficients from UECM.
-#' @param nperiods An integer specifying the number of time observations by unit.
-#' @param nunits An integer reflecting the number of panel units
-#' @param sel_variables A character vector of selected variable names.
-#' @param table_dt Dataframe of origin for all variables.
+#' @param systemfit_uecm_coefs \code{systemfit} object (UECM results).
+#' @param sel_variables Character vector of variable names.
+#' @param table_dt Data.table containing the original data.
+#' @param nperiods Number of time periods.
+#' @param nunits Number of panel units.
 #'
-#' @return A data.table object containing the error correction term.
+#' @return A data.table with the ECT.
 #' @export
-get_ect_systemfit <- function(
-    systemfit_uecm_coefs,
-    sel_variables,
-    table_dt,
-    nperiods,
-    nunits) {
-    table_dt <- copy(table_dt)
+get_ect_systemfit <- function(systemfit_uecm_coefs, sel_variables, table_dt, nperiods, nunits) {
+    table_dt <- data.table::copy(table_dt)
     coef_exp <- systemfit_uecm_coefs$coefficients
     lags_x <- coef_exp[names(systemfit_uecm_coefs$coefficients) %like% "lag"]
-    time <- rep(c(1:nperiods + 1), nunits)
+
+    # Check if coefficients exist for all selected variables
+    missing_coefs <- setdiff(sel_variables, gsub("_lag+", "", names(lags_x)))
+    if (length(missing_coefs) > 0) {
+        stop(paste("Missing coefficients for variables:", paste(missing_coefs, collapse = ", ")))
+    }
+
+    time <- rep(c(1:(nperiods + 1)), nunits)
     key <- c()
+
     # Initialize ect_x with the first term
-    ect_x <- table_dt[, get(sel_variables[1])]
+    ect_x <- table_dt[, get(sel_variables)]
 
     # Loop through the rest of the variables in sel_variables
     for (i in 2:length(sel_variables)) {
         term <-
             table_dt[, get(sel_variables[i])] * lags_x[names(lags_x) %like% sel_variables[i]] /
-                abs(lags_x[names(lags_x) %like% sel_variables[1]])
+                abs(lags_x[names(lags_x) %like% sel_variables])
         ect_x <- ect_x - term
     }
 
@@ -146,42 +144,36 @@ get_ect_systemfit <- function(
     return(transf)
 }
 
-
-#' Restricted Error Correction Model for Systemfit
+#' @param grouping Character string, name of the grouping column.
+#' @param method "SUR", "2SLS", or "3SLS".
+#' @param method_solv Solution method for 3SLS.
+#' @param iterations Integer, max iterations.
+#' @param nunits Number of panel units.
+#' @param nperiods Number of time periods.
+#' @param nlags Number of lags.
+#' @param inst_list Character vector of instruments (for 2SLS/3SLS).
 #'
-#' Computes the Restricted Error Correction Model for Systemfit.
-#'
-#' @param col_names A character vector of column names.
-#' @param uecm_model An object of class systemfit, representing the UECM model.
-#' @param grouping Column defining panel units.
-#' @param method Character string indicating the desired estimation method.
-#' @param method_solv Character string indicating the solution method. Default is "EViews".
-#' @param iterations An integer indicating the number of iterations.
-#' @param nunits An integer reflecting the number of panel units
-#' @param nperiods An integer specifying the number of time observations by unit.
-#' @param nlags An integer specifying the number of lags.
-#' @param dt A data.table object containing the data.
-#' @param inst_list List of instruments for 2SLS and 3SLS.
-#'
-#' @return A model result from systemfit.
+#' @return A \code{systemfit} object.
 #' @export
-recm_systemfit <- function(
-    col_names = c(),
-    uecm_model,
-    grouping,
-    method = "SUR",
-    method_solv = "EViews",
-    iterations = 1,
-    nunits = 1,
-    nperiods = 1,
-    nlags = 1,
-    dt = data.table::data.table(),
-    inst_list = c()) {
-    diff_cols <- c()
-    all_lag_cols <- c()
-    dt <- copy(dt)
+recm_systemfit <- function(data, col_names, uecm_model, grouping, method = "SUR",
+                           method_solv = "EViews", iterations = 1, nunits, nperiods,
+                           nlags = 1, inst_list = NULL) {
+    dt <- data.table::copy(data)
+    stopifnot(is.data.frame(dt) || is.data.table(dt), "data must be a data.frame or data.table")
+    stopifnot(is.character(col_names), "col_names must be a character vector")
+    stopifnot(is.numeric(nlags), "nlags must be numeric")
+    stopifnot(nlags >= 0, "nlags must be non-negative")
+    stopifnot(is.character(grouping), "grouping must be a character string")
+    stopifnot(grouping %in% names(dt), paste("grouping variable", grouping, "not found in data"))
+    stopifnot(method %in% c("SUR", "2SLS", "3SLS"), "method must be one of 'SUR', '2SLS', '3SLS'")
 
-    # get and incorporate ECT from UECM
+    if (method %in% c("2SLS", "3SLS")) {
+        stopifnot(!is.null(inst_list), "inst_list must be provided for 2SLS/3SLS")
+        stopifnot(is.character(inst_list), "inst_list must be a character vector")
+        stopifnot(inst_list %in% col_names, "Instruments must be in col_names")
+    }
+
+    # Get and incorporate ECT from UECM
     ect_test <- get_ect_systemfit(
         systemfit_uecm_coefs = uecm_model,
         sel_variables = col_names,
@@ -191,92 +183,77 @@ recm_systemfit <- function(
     )
     dt$ect <- ect_test$ect_x
 
-    # Append lags and diffs to dataframe an create its associated vector of names
-    ifelse(method != "SUR", col_names_ext <- c(col_names, inst_list[-1]), col_names_ext <- col_names)
+    diff_cols <- character()
+    all_lag_cols <- character()
+    all_inst_cols <- character()
 
-    for (col in col_names_ext) {
-        # Add diff column
+    for (col in col_names) {
         diff_col <- paste0(col, "_diff")
         dt[, (diff_col) := diff(c(NA, get(col))), by = get(grouping)]
         diff_cols <- c(diff_cols, diff_col)
+
+        for (lag in 2:nlags) { # Lags from 2 onwards for RECM
+            lag_col <- paste0(col, "_diff", lag)
+            dt[, (lag_col) := diff(c(rep(NA, lag), get(col)), differences = lag), by = get(grouping)]
+            all_lag_cols <- c(all_lag_cols, lag_col)
+        }
     }
-    for (col in col_names) {
-        if (nlags >= 2) {
-            # Add lag columns for each lag value
-            for (lag in 2:nlags) {
-                lag_col <- paste0(col, "_diff", lag)
-                dt[, (lag_col) := diff(c(rep(NA, lag), get(col)), differences = lag), by = get(grouping)]
-                all_lag_cols <- c(all_lag_cols, lag_col)
+
+    if (method %in% c("2SLS", "3SLS")) {
+        for (inst in inst_list[-1]) { # Instruments (excluding endogenous variable)
+            for (lag in 1:nlags) {
+                inst_col <- paste0(inst, "_lag", lag)
+                dt[, (inst_col) := data.table::shift(get(inst), n = lag, type = "lag"), by = get(grouping)]
+                all_inst_cols <- c(all_inst_cols, inst_col)
             }
         }
     }
 
-    # Construct formula strings
-    if (method != "SUR") {
-        diff_inst <- diff_cols[!(diff_cols %like% inst_list[1])]
-        inst_eq <- paste(paste("~", paste(c(diff_inst[-1], all_lag_cols), collapse = " + ")), "+ ect")
-        for (i in 2:length(inst_list)) diff_cols <- diff_cols[!(diff_cols %like% inst_list[i])]
+    formula_str <- paste(diff_cols, "~", paste(c(diff_cols[-1], all_lag_cols, "ect"), collapse = " + "))
+
+    if (method %in% c("2SLS", "3SLS")) {
+        inst_eq <- paste("~", paste(c(all_lag_cols, all_inst_cols, "ect"), collapse = " + ")) # Instruments including ect
     }
-    ifelse(nlags >= 2,
-        formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1], all_lag_cols), collapse = " + ")), "+ ect"),
-        formula_str <- paste(diff_cols[1], "~", paste(paste(c(diff_cols[-1]), collapse = " + ")), "+ ect")
+
+    dt <- dt[complete.cases(dt), ]
+    dt <- plm::pdata.frame(dt, index = unique(grouping))
+    control_system <- systemfit::systemfit.control(
+        methodResidCov = "noDfCor", residCovWeighted = FALSE, maxiter = iterations, tol = 1e-5
     )
 
-    # Tidy and transform data.table
-    dt <- dt[complete.cases(dt), ] # Remove rows with NA values
-    dt <- plm::pdata.frame(dt, index = c("reporter", "year")) # Transform to panel dataframe
-
-    # Run systemfit model
     if (method == "3SLS") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            maxiter = iterations,
-            tol = 1e-5,
-            method3sls = method_solv # GLS(default), IV, GMM, SCHMIDT, EVIEWS
-        )
+        control_system$method3sls <- method_solv
         lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
+            data = dt, method = method,
+            control = control_system, inst = as.formula(inst_eq)
+        )
+    } else if (method == "2SLS") {
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method,
+            control = control_system, inst = as.formula(inst_eq)
+        )
+    } else {
+        lm_result <- systemfit::systemfit(as.formula(formula_str),
+            data = dt, method = method,
+            control = control_system
         )
     }
-    if (method == "2SLS") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE
-        )
-        lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system, inst = as.formula(inst_eq)
-        )
-    }
-    if (method == "SUR") {
-        control_system <- systemfit::systemfit.control(
-            methodResidCov = "noDfCor",
-            residCovWeighted = FALSE,
-            maxiter = iterations,
-            tol = 1e-5,
-        )
-        lm_result <- systemfit::systemfit(as.formula(formula_str),
-            data = dt, method = method, control = control_system
-        )
-    }
+
     return(lm_result)
 }
 
 
-#' Bounds F-Test for Systemfit Error Correction Model
+#' Perform Bounds F-Test
 #'
-#' Applies the Bounds F-Test to the system equations based on Pesaran (2001).
+#' Performs the Bounds F-test.
 #'
-#' @param system_ecm An object of class systemfit, representing the ECM.
-#' @param units A character vector specifying the units or entities for the model.
-#' @param sel_variables Variables included in the cointegration relationship
+#' @param system_ecm \code{systemfit} object (ECM results).
+#' @param units Character vector of unit names.
+#' @param sel_variables Character vector of variables in cointegration relationship.
 #'
-#' @return A numeric vector with F-test results for each unit.
+#' @return Numeric vector of F-test results.
 #' @export
-systemfit_boundsF_test <- function(
-    system_ecm,
-    units,
-    sel_variables) {
+systemfit_boundsF_test <- function(system_ecm, units, sel_variables) {
     bound_interx <- c()
 
     for (n in seq_along(units)) {
@@ -285,8 +262,8 @@ systemfit_boundsF_test <- function(
             aod::wald.test(
                 b = coef(system_ecm$eq[[n]]),
                 Sigma = vcov(system_ecm$eq[[n]]),
-                Terms = 2:(length(sel_variables) + 1)
-            )$result$chi2[1] / length(sel_variables)
+                Terms = 2:(length(sel_variables) + 1) # Terms related to the variables in the cointegration relationship
+            )$result$chi2 / length(sel_variables)
     }
 
     return(bound_interx)
