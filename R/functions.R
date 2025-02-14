@@ -148,7 +148,7 @@ recm_systemfit <- function(
         nperiods = nperiods,
         nunits = nunits
     )
-    dt`${ect <- ect_test}$`ect_x
+    dt$ect <- ect_test$ect_x
 
     col_names_ext <- if (method != "SUR") c(col_names, inst_list[-1]) else col_names
 
@@ -213,7 +213,7 @@ systemfit_boundsF_test <- function(
             b = coef(system_ecm$eq[[n]]),
             Sigma = vcov(system_ecm$eq[[n]]),
             Terms = 2:(length(sel_variables) + 1)
-        )`${result}$`chi2[1] / length(sel_variables)
+        )$result$chi2[1] / length(sel_variables)
     })
 
     return(bound_interx)

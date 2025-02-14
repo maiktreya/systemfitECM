@@ -30,21 +30,21 @@ table_dt <- data.table(
 # Set remaining control parameters
 sel_variables <- c("tech_exports", "rprices", "fincome") # first is dependant variable in systemfit
 instruments <- c("fincome", "investment", "consumption") # first is endogenous regressor and remaining their instruments.
-method <- "SUR"
+method <- "3SLS"
 estimation3SLS <- "EViews"
-lags <- 2
+lags <- 1
 iterations <- 1
 
 
 # Get an Unrestricted ECM using systemfit methods
 pre_exp <- uecm_systemfit(
-    data = table_dt,
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
     method = method,
     iterations = iterations,
     method_solv = estimation3SLS, # only 3sls,
+        dt = table_dt,
     inst_list = instruments # endo first, then remaining
 )
 pre_exp %>%
@@ -77,7 +77,7 @@ ect_test %>%
 # Finally, get a Restricted ECM using systemfit methods
 pos_exp <- recm_systemfit(
     uecm_model = pre_exp,
-    data = table_dt,
+    dt = table_dt,
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
