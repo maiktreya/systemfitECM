@@ -23,7 +23,7 @@ Description: Enabling the estimation of restricted and unrestricted Error Correc
 Install the latest version of this package with:
 
 ``` r
-devtools::install_github("iliciuv/systemfitECM")
+devtools::install_github("iliciuv/systemfitECM", ref = "new-dev")
 ```
 
 -----------------------------------------------
