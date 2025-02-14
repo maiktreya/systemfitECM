@@ -38,8 +38,3 @@ A \code{systemfit} object.
 \description{
 Estimates a UECM for panel data using \code{systemfit}.
 }
-\examples{
-# Example (replace with your data)
-# data(your_data)
-# uecm_model <- uecm_systemfit(data = your_data,...)
-}

@@ -7,7 +7,10 @@ library(systemfit) # for FGLS system linear models
 library(magrittr) # For piping with %>% without dplyr dependencies
 library(aod) # for performing F Bounds test
 
-# install and import this library
+if (!requireNamespace("systemfitECM", quietly = TRUE)) {
+    unloadNamespace("systemfitECM")
+    devtools::install_github("iliciuv/systemfitECM", ref = "new-dev", force = TRUE)
+}
 library(systemfitECM)
 
 # Create the sample dataset
@@ -35,7 +38,7 @@ iterations <- 1
 
 # Get an Unrestricted ECM using systemfit methods
 pre_exp <- uecm_systemfit(
-    dt = table_dt,
+    data = table_dt,
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
@@ -74,7 +77,7 @@ ect_test %>%
 # Finally, get a Restricted ECM using systemfit methods
 pos_exp <- recm_systemfit(
     uecm_model = pre_exp,
-    dt = table_dt,
+    data = table_dt,
     col_names = sel_variables,
     nlags = lags,
     grouping = "reporter",
