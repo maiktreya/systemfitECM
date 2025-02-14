@@ -10,4 +10,4 @@ devtools::install(dependencies = TRUE) # To ensure a clean install
 devtools::build(path = "dist/systemfitECM_0.1.0.tar.gz")
 
 # install.packages("dist/systemfitECM_0.1.0.tar.gz",repos = NULL, type="source") #nolint
-# devtools::install_github("iliciuv/systemfitECM", ref = "new-dev") #nolint
+# devtools::install_github("iliciuv/systemfitECM", force = TRUE) #nolint
