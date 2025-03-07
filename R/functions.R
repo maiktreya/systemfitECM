@@ -285,7 +285,7 @@ systemfit_boundsF_test <- function(
             aod::wald.test(
                 b = coef(system_ecm$eq[[n]]),
                 Sigma = vcov(system_ecm$eq[[n]]),
-                Terms = (length(sel_variables) + 1):length(coef)
+                Terms = (length(sel_variables) + 1):length(coef(system_ecm$eq[[n]]))
             )$result$chi2[1] / length(sel_variables)
     }
 
