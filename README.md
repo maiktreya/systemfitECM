@@ -20,10 +20,16 @@ Description: Enabling the estimation of restricted and unrestricted Error Correc
 
 ## Installation
 
-Install the latest version of this package with:
+Install the latest version of this package from GitHub with:
 
 ``` r
-devtools::install_github("iliciuv/systemfitECM")
+devtools::install_github("iliciuv/systemfitECM" , force = TRUE)
+```
+
+Or download the tar.gz file from the releases section and install it with:
+
+```r
+install.packages("dist/systemfitECM_0.1.0.tar.gz", repos = NULL,type="source") 
 ```
 
 -----------------------------------------------
@@ -155,3 +161,9 @@ Where:
 
 - Fixed computation of ECT. For that purpose two additional parameters are set for its calculation and the calculation of associated RECM (nunits and nperiods).
 - Fixed RECM parameterization (lags were removed and only multi order diffs are included along ECT).
+
+#### 08/03/2025
+
+- Fixed computation of F-Bounds test for UECM.
+- Checked computation of F-Bounds & UECM and RECM results against manual calculations.
+- First production version. 
